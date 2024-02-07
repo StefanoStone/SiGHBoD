@@ -10,7 +10,7 @@ def run_dockerfile(token, repo):
     parsed_output = [tuple(line.split(',')) for line in output_lines if line]
     parsed_output = [t for t in parsed_output if t[1] != 'Unknown']
     parsed_output = [(t[0], False) if t[1] in ['Human'] else t for t in parsed_output]
-    parsed_output = [(t[0], False) if t[1] in ['Bot'] else t for t in parsed_output] 
+    parsed_output = [(t[0], True) if t[1] in ['Bot'] else t for t in parsed_output] 
 
     return parsed_output
 

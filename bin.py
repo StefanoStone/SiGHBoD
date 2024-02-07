@@ -26,7 +26,7 @@ def get_users(file_path, token):
             users[emails.index(email)] = (users[emails.index(email)][0], users[emails.index(email)][1], login)
             
 
-        # Introduce a delay of 0.72 seconds between each request to avoid rate limiting
+        # TODO Introduce a delay of 0.72 seconds between each request to avoid rate limiting
         # time.sleep(0.72)
 
     # expected output: [('Name', 'Email', 'Username')]

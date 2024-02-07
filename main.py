@@ -1,7 +1,8 @@
-from run_bodegha import bodegha
-from name_based_detection import bin
-import os
+from SiGHBoD.bodegha import bodegha
+from SiGHBoD.bin import bin
+from SiGHBoD.bim import bim
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
