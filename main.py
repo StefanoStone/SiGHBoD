@@ -1,6 +1,5 @@
 from bodegha import bodegha
 from bin import bin
-# from bim import bim
 from dotenv import load_dotenv
 import os
 
