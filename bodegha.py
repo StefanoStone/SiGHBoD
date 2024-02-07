@@ -18,4 +18,4 @@ def run_dockerfile(token, repo):
 def bodegha(token, repo):
     return run_dockerfile(token, repo)
 
-
+# TODO handle errors on subprocess.run

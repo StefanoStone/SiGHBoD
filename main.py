@@ -1,6 +1,6 @@
-from SiGHBoD.bodegha import bodegha
-from SiGHBoD.bin import bin
-from SiGHBoD.bim import bim
+from bodegha import bodegha
+from bin import bin
+# from bim import bim
 from dotenv import load_dotenv
 import os
 
