@@ -23,7 +23,8 @@ def get_users(file_path, token):
         
         if 'items' in data and len(data['items']) > 0:
             login = data['items'][0]['login']
-            users[emails.index(email)] += (login,)
+            users[emails.index(email)] = (users[emails.index(email)][0], users[emails.index(email)][1], login)
+            
 
         # Introduce a delay of 0.72 seconds between each request to avoid rate limiting
         # time.sleep(0.72)
