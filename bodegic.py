@@ -1,14 +1,15 @@
 import subprocess
 
-def run_dockerfile(token, repo):
+def run_dockerfile(path, repo):
     """
     Run the Docker container and capture the output
-    @param token: the GitHub token
-    @param repo: the GitHub repository
+    @param path: the path to the folder containing the Git repository
+    @param repo: the Git repository
 
     @return: the output of the Docker container
     """
-    result = subprocess.run(["docker", "run", "--rm", "bodegha", repo, "--key", token, "--csv"], capture_output=True, text=True)
+ 
+    result = subprocess.run(["docker", "run", "--rm", "-v" , f'{path}:/bodegic/repos' , "bodegic", f'repos/{repo}', "--csv"], capture_output=True, text=True)
 
     output_lines = result.stdout.split('\n') 
     output_lines.pop(0) # headers are not needed
@@ -17,6 +18,7 @@ def run_dockerfile(token, repo):
     for line in output_lines:
         if line and line not in ['','\n']:
             line = line.split(',')
+            print(line)
             line[1] = line[1].strip()
             if line[1] == 'Unknown':
                 continue
@@ -29,5 +31,5 @@ def run_dockerfile(token, repo):
 
     return parsed
 
-def bodegha(token, repo):
-    return run_dockerfile(token, repo)
+def bodegic(repos_path, repo):
+    return run_dockerfile(repos_path, repo)
