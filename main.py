@@ -1,6 +1,7 @@
 from bodegha import bodegha
 from bodegic import bodegic
 from bin import bin
+import pandas as pd
 from dotenv import load_dotenv
 from datetime import datetime
 import os
@@ -21,7 +22,7 @@ print("Bodegha execution time:", bodegha_execution_time)
 
 result_bodegic = bodegic(repos_path, repo)
 bodegic_execution_time = datetime.now() - bodegha_execution_time
-print("Bodegic execution time:", bodegic_execution_time)
+print("Bodegic execution time:", bodegha_execution_time)
 
 result_bin = bin(token, file)
 bin_execution_time = datetime.now() - bodegic_execution_time
@@ -36,3 +37,7 @@ print('---')
 print("Bodegic:", result_bodegic)
 print('---')
 print("Bin:", result_bin)
+
+df = pd.DataFrame(result_bin, columns =['Name', 'Email', 'Login', 'Bin'])
+
+df.to_csv('example.csv', index=False)
