@@ -18,7 +18,6 @@ def run_dockerfile(path, repo):
     for line in output_lines:
         if line and line not in ['','\n']:
             line = line.split(',')
-            print(line)
             line[1] = line[1].strip()
             if line[1] == 'Unknown':
                 continue
