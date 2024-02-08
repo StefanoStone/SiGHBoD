@@ -22,9 +22,9 @@ def run_dockerfile(path, repo):
             line[1] = line[1].strip()
             if line[1] == 'Unknown':
                 continue
-            if line[1] == 'Human':
+            elif line[1] == 'Human':
                 parsed.append((line[0], False))
-            if line[1] == 'Bot':
+            elif line[1] == 'Bot':
                 parsed.append((line[0], True))
             else:
                 print("parsing error: ", line)
