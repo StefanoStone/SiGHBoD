@@ -39,5 +39,7 @@ print('---')
 print("Bin:", result_bin)
 
 df = pd.DataFrame(result_bin, columns =['Name', 'Email', 'Login', 'Bin'])
+df['Bodegha'] = None
+df['Bodegic'] = None
 
 df.to_csv('example.csv', index=False)
