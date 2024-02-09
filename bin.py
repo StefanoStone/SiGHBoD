@@ -1,33 +1,53 @@
+from dotenv import load_dotenv
+from github import Github
 import requests
 import time
 import csv
 import re
+import os
+
+def check_quota(token):
+    g = Github(token)
+    quota = g.get_rate_limit().core
+
+    return quota
+
+def guarded_api_call(token, url):
+    if check_quota(token).remaining == 0:
+        time.sleep(check_quota(token).reset.timestamp() - time.time())
+
+    headers = {
+        'Authorization': f'token {token}'
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    return data
 
 def get_users(file_path, token):
     users = []
-    emails = []
     with open(file_path, 'r') as file:
         reader = csv.reader(file)
         for row in reader:
             users.append((row[0], row[1], None))
-            emails.append(row[1])
 
-    # TODO handle github api request limit with a catch 
-    for email in emails:
-        url = f"https://api.github.com/search/users?q={email}"
-        headers = {
-            'Authorization': f'token {token}'
-        }
-        response = requests.get(url, headers=headers)
-        data = response.json()
-        
+    for user in users:
+        full_name = user[0]
+        email = user[1]
+        data = guarded_api_call(token, f"https://api.github.com/search/users?q={email}")
+
         if 'items' in data and len(data['items']) > 0:
-            login = data['items'][0]['login']
-            users[emails.index(email)] = (users[emails.index(email)][0], users[emails.index(email)][1], login)
-            
+            new_user = list(user)
+            new_user[2] = data['items'][0]['login']
+            users[users.index(user)] = new_user
+        else: 
+            data = guarded_api_call(token, f"https://api.github.com/search/users?q={full_name}")
 
-        # TODO Introduce a delay of 0.72 seconds between each request to avoid rate limiting
-        # time.sleep(0.72)
+            if 'items' in data and len(data['items']) > 0:
+                new_user = list(user)
+                new_user[2] = data['items'][0]['login']
+                users[users.index(user)] = new_user
+
 
     # expected output: [('Name', 'Email', 'Username')]
     return users
