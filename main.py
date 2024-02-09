@@ -7,7 +7,9 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 import argparse
+import warnings
 
+# warnings.filterwarnings("ignore")
 
 def env_parser():
     load_dotenv()
