@@ -1,6 +1,6 @@
 import subprocess
 
-def run_dockerfile(path, repo):
+def run_dockerfile(path, repo, verbose):
     """
     Run the Docker container and capture the output
     @param path: the path to the folder containing the Git repository
@@ -26,9 +26,10 @@ def run_dockerfile(path, repo):
             elif line[1] == 'Bot':
                 parsed.append((line[0], True))
             else:
-                print("parsing error: ", line)
+                if verbose:
+                    print("parsing error: ", line)
 
     return parsed
 
-def bodegic(repos_path, repo):
-    return run_dockerfile(repos_path, repo)
+def bodegic(repos_path, repo, verbose):
+    return run_dockerfile(repos_path, repo, verbose)

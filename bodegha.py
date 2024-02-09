@@ -1,6 +1,6 @@
 import subprocess
 
-def run_dockerfile(token, repo):
+def run_dockerfile(token, repo, verbose):
     """
     Run the Docker container and capture the output
     @param token: the GitHub token
@@ -25,9 +25,10 @@ def run_dockerfile(token, repo):
             elif line[1] == 'Bot':
                 parsed.append((line[0], True))
             else:
-                print("parsing error: ", line)
+                if verbose:
+                    print("parsing error: ", line)
 
     return parsed
 
-def bodegha(token, repo):
-    return run_dockerfile(token, repo)
+def bodegha(token, repo, verbose):
+    return run_dockerfile(token, repo, verbose)

@@ -1,13 +1,14 @@
+
+from dotenv import load_dotenv
+from datetime import datetime
 from bodegha import bodegha
 from bodegic import bodegic
 from bin import bin
 import pandas as pd
+import warnings
+import argparse
 import sys
 import os
-from dotenv import load_dotenv
-from datetime import datetime
-import argparse
-import warnings
 
 # warnings.filterwarnings("ignore")
 
@@ -23,17 +24,18 @@ def main(args):
     token = args.key
     repo = args.remote
     repos_path = args.local
+    file = args.users
 
     if verbose:
         start_time = datetime.now()
         print("Starting at:", start_time)
 
-    result_bodegha = bodegha(token, repo)
+    result_bodegha = bodegha(token, repo, verbose)
     if verbose:
         bodegha_execution_time = datetime.now() - start_time
         print("Bodegha execution time:", bodegha_execution_time)
 
-    result_bodegic = bodegic(repos_path, repo)
+    result_bodegic = bodegic(repos_path, repo, verbose)
     if verbose:
         bodegic_execution_time = datetime.now() - bodegha_execution_time
         print("Bodegic execution time:", bodegha_execution_time)
@@ -109,7 +111,7 @@ def cli():
     if args.key == '' or len(args.key) < 35:
         sys.exit('A GitHub personal access token is required to start the process. Please provide a valid token.')
 
-    main(args)
+    print(main(args))
 
 if __name__ == '__main__':
     cli()
