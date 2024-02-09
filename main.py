@@ -42,4 +42,16 @@ df = pd.DataFrame(result_bin, columns =['Name', 'Email', 'Login', 'Bin'])
 df['Bodegha'] = None
 df['Bodegic'] = None
 
-df.to_csv('example.csv', index=False)
+for element in result_bodegha:
+    for index, row in df.iterrows():
+        row_list = row.to_list()
+        if element[0] in row_list:
+            df.at[index, 'Bodegha'] = element[1]
+
+for element in result_bodegic:
+    for index, row in df.iterrows():
+        row_list = row.to_list()
+        if element[0] in row_list:
+            df.at[index, 'Bodegic'] = element[1]
+
+df.to_csv('nokogiri.csv', index=False)
