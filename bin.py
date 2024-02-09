@@ -4,7 +4,6 @@ import requests
 import time
 import csv
 import re
-import os
 
 def check_quota(token):
     g = Github(token)
