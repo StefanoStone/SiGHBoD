@@ -5,11 +5,11 @@ from bodegha import bodegha
 from bodegic import bodegic
 from bin import bin
 import pandas as pd
-import warnings
 import argparse
 import sys
 import os
 
+# import warnings
 # warnings.filterwarnings("ignore")
 
 def env_parser():
@@ -18,6 +18,18 @@ def env_parser():
     repos_path = os.getenv("REPOS_DIR")
     repo = 'sparklemotion/nokogiri'
     file = './SiGHBoD/example.csv'
+
+def weighted_average(boolean_list):
+    if len(boolean_list) != 3:
+        raise ValueError("Input list must contain exactly three booleans")
+
+    # Bin = 0.45, Bodegha = 0.25, Bodegic = 0.3
+    weights = [0.45, 0.25, 0.3]
+
+    boolean_list = [boolean if boolean is not None else False for boolean in boolean_list]
+    weighted_sum = sum(weight * int(boolean) for weight, boolean in zip(weights, boolean_list))
+
+    return bool(weighted_sum)
 
 def main(args):
     verbose = args.verbose
@@ -75,7 +87,9 @@ def main(args):
 
     for index, row in df.iterrows():
         results = [row['Bin'], row['Bodegha'], row['Bodegic']]
-        df.at[index, 'Bot'] = any(results)
+        # compute weighted average of the results
+        average = weighted_average(results)
+        df.at[index, 'Bot'] = average
 
     if args.json:
         return (df.reset_index().to_json(orient='records'))
