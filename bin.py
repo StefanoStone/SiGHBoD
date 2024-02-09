@@ -3,6 +3,7 @@ from github import Github
 import requests
 import time
 import csv
+import logging
 import re
 
 def check_quota(token):
@@ -18,7 +19,18 @@ def guarded_api_call(token, url):
     headers = {
         'Authorization': f'token {token}'
     }
-    response = requests.get(url, headers=headers)
+
+    try:
+        response = requests.get(url, headers=headers)
+    except requests.exceptions.RequestException as e:
+        if e.response.status_code == 403:
+           guarded_api_call(token, url)
+        elif e.response.status_code == 404:
+            return {}
+        else:
+            logging.debug(f"Error: {e}")
+            raise e
+        
     data = response.json()
 
     return data
