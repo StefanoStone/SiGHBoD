@@ -113,9 +113,9 @@ def arg_parser():
         help='GitHub APIv4 key to download comments from GitHub APIs')
     
     group2 = parser.add_mutually_exclusive_group()
-    group2.add_argument('--text', action='store_true', help='Print results as text.')
-    group2.add_argument('--csv', action='store_true', help='Print results as csv.')
-    group2.add_argument('--json', action='store_true', help='Print results as json.')
+    group2.add_argument('--text', action='store_true', help='Print results as text')
+    group2.add_argument('--csv', action='store_true', help='Print results as csv')
+    group2.add_argument('--json', action='store_true', help='Print results as json')
 
     return parser.parse_args()
 
