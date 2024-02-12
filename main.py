@@ -110,7 +110,7 @@ def arg_parser():
         help='To have verbose output result')
     parser.add_argument(
         '--key', metavar='TOKEN', required=True, type=str, default='',
-        help='GitHub APIv4 key to download comments from GitHub GraphQL API')
+        help='GitHub APIv4 key to download comments from GitHub APIs')
     
     group2 = parser.add_mutually_exclusive_group()
     group2.add_argument('--text', action='store_true', help='Print results as text.')

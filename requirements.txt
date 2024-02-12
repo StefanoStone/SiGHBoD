@@ -1,3 +1,4 @@
-pandas>=2.2.0
+pandas==1.1.1
 urllib3==1.26.6
 PyGithub==2.2.0
+python-dotenv==1.0.1

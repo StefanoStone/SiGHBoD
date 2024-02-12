@@ -8,8 +8,8 @@ def run_dockerfile(path, repo, verbose):
 
     @return: the output of the Docker container
     """
- 
-    result = subprocess.run(["docker", "run", "--rm", "-v" , f'{path}:/bodegic/repos' , "bodegic", f'repos/{repo}', "--csv"], capture_output=True, text=True)
+    # "docker", "run", "--rm", "-v" , f'{path}:/bodegic/repos' , 
+    result = subprocess.run(["bodegic", f'repos/{repo}', "--csv"], capture_output=True, text=True)
 
     output_lines = result.stdout.split('\n') 
     output_lines.pop(0) # headers are not needed
