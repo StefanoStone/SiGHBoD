@@ -27,13 +27,16 @@ def weighted_average(boolean_list):
     # Bin = 0.45, Bodegha = 0.25, Bodegic = 0.3
     weights = [0.45, 0.25, 0.3]
 
-    boolean_list = [boolean if boolean is not None else False for boolean in boolean_list]
     sum = 0
+    total = 0
     for index, boolean in enumerate(boolean_list):
+        if boolean is not None:
+            total += weights[index]
+
         if boolean:
             sum += weights[index]
 
-    return sum >= 0.5
+    return sum >= total / 2
 
 def main(args):
     verbose = args.verbose
