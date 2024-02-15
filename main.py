@@ -19,6 +19,7 @@ def env_parser():
     repo = 'sparklemotion/nokogiri'
     file = './SiGHBoD/example.csv'
 
+
 def weighted_average(boolean_list):
     if len(boolean_list) != 3:
         raise ValueError("Input list must contain exactly three booleans")
@@ -27,9 +28,12 @@ def weighted_average(boolean_list):
     weights = [0.45, 0.25, 0.3]
 
     boolean_list = [boolean if boolean is not None else False for boolean in boolean_list]
-    weighted_sum = sum(weight * int(boolean) for weight, boolean in zip(weights, boolean_list))
+    sum = 0
+    for index, boolean in enumerate(boolean_list):
+        if boolean:
+            sum += weights[index]
 
-    return bool(weighted_sum)
+    return sum >= 0.5
 
 def main(args):
     verbose = args.verbose
