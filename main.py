@@ -134,5 +134,14 @@ def cli():
 
     print(main(args))
 
+import csv
 if __name__ == '__main__':
+    """     
+    file_path = './SiGHBoD/example.csv'
+    users = []
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            users.append((row[0], row[1], None))
+    """    
     cli()

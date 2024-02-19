@@ -67,7 +67,8 @@ def detect_if_bot(user):
     bot_regex = '([\W0-9_]bot$|^bot[\W0-9_]|[\W0-9_]bot[\W0-9_])'
     test_regex = '([\W0-9_]test$|^test[\W0-9_]|[\W0-9_]test[\W0-9_])'
     auto_regex = '([\W0-9_]auto$|^auto[\W0-9_]|[\W0-9_]auto[\W0-9_])'
-    regex = f"({bot_regex}|{test_regex}|{auto_regex})"
+    action_regex = '([\W0-9_]action$|^action[\W0-9_]|[\W0-9_]action[\W0-9_])'
+    regex = f"({bot_regex}|{test_regex}|{auto_regex}|{action_regex})"
     email_prefix = user[1].split('@')[0]
     results = []
     results.append(re.search(regex, user[0], re.IGNORECASE))
