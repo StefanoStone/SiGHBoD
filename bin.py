@@ -64,7 +64,10 @@ def get_users(file_path, token):
     return users
 
 def detect_if_bot(user):
-    regex = '([\W0-9_]bot$|^bot[\W0-9_]|[\W0-9_]bot[\W0-9_])'
+    bot_regex = '([\W0-9_]bot$|^bot[\W0-9_]|[\W0-9_]bot[\W0-9_])'
+    test_regex = '([\W0-9_]test$|^test[\W0-9_]|[\W0-9_]test[\W0-9_])'
+    auto_regex = '([\W0-9_]auto$|^auto[\W0-9_]|[\W0-9_]auto[\W0-9_])'
+    regex = f"({bot_regex}|{test_regex}|{auto_regex})"
     email_prefix = user[1].split('@')[0]
     results = []
     results.append(re.search(regex, user[0], re.IGNORECASE))
