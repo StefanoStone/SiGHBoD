@@ -2,8 +2,9 @@
 from dotenv import load_dotenv
 from datetime import datetime
 from bodegha import bodegha
+from rabbit import rabbit
 from bodegic import bodegic
-from bin import bin
+from bin import bin, get_users
 import pandas as pd
 import argparse
 import sys
@@ -59,7 +60,7 @@ def main(args):
         bodegic_execution_time = datetime.now() - bodegha_execution_time
         print("Bodegic execution time:", bodegha_execution_time)
 
-    result_bin = bin(token, file)
+    result_bin = bin(token, file, verbose)
     if verbose:
         bin_execution_time = datetime.now() - bodegic_execution_time
         print("Bin execution time:", bin_execution_time)
@@ -131,10 +132,18 @@ def cli():
     args = arg_parser()
     if args.key == '' or len(args.key) < 35:
         sys.exit('A GitHub personal access token is required to start the process. Please provide a valid token.')
+    
+    users = get_users(args.users, args.key, args.verbose)
+    names = ''
+    for user in users:
+        if user[2] is not None:
+            names += user[2] + ' '
+    
+    result_rabbit = rabbit(args.key, names, False)
+    print(result_rabbit)
+    
+    "print(main(args))"
 
-    print(main(args))
-
-import csv
 if __name__ == '__main__':
     """     
     file_path = './SiGHBoD/example.csv'

@@ -12,8 +12,12 @@ def check_quota(token):
 
     return quota
 
-def guarded_api_call(token, url):
+def guarded_api_call(token, url, verbose):
     if check_quota(token).remaining == 0:
+
+        if verbose:
+            print("Waiting for rate limit reset...")
+        
         time.sleep(check_quota(token).reset.timestamp() - time.time())
 
     headers = {
@@ -35,7 +39,7 @@ def guarded_api_call(token, url):
 
     return data
 
-def get_users(file_path, token):
+def get_users(file_path, token, verbose):
     users = []
     with open(file_path, 'r') as file:
         reader = csv.reader(file)
@@ -45,22 +49,24 @@ def get_users(file_path, token):
     for user in users:
         full_name = user[0]
         email = user[1]
-        data = guarded_api_call(token, f"https://api.github.com/search/users?q={email}")
+
+        if verbose: 
+            print(f"Searching for {full_name} or {email}")
+
+        data = guarded_api_call(token, f"https://api.github.com/search/users?q={email}", verbose)
 
         if 'items' in data and len(data['items']) > 0:
             new_user = list(user)
             new_user[2] = data['items'][0]['login']
             users[users.index(user)] = new_user
         else: 
-            data = guarded_api_call(token, f"https://api.github.com/search/users?q={full_name}")
+            data = guarded_api_call(token, f"https://api.github.com/search/users?q={full_name}", verbose)
 
             if 'items' in data and len(data['items']) > 0:
                 new_user = list(user)
                 new_user[2] = data['items'][0]['login']
                 users[users.index(user)] = new_user
 
-
-    # expected output: [('Name', 'Email', 'Username')]
     return users
 
 def detect_if_bot(user):
@@ -78,14 +84,14 @@ def detect_if_bot(user):
 
     return any(results)
 
-def bin(token, file_path):
-    users = get_users(file_path, token)
+def bin(token, file_path, verbose):
+    users = get_users(file_path, token, verbose)
     for user in users:
         is_bot = detect_if_bot(user)
         users[users.index(user)] += (is_bot,)
     
-    with open('output.csv', 'w') as file:
+    """ with open('output.csv', 'w') as file:
         writer = csv.writer(file)
-        writer.writerows(users)
+        writer.writerows(users) """
 
     return users

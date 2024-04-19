@@ -6,6 +6,7 @@ WORKDIR /sighbod
 # install dependencies for bot detection
 RUN pip install git+https://github.com/mehdigolzadeh/BoDeGHa
 RUN pip install git+https://github.com/mehdigolzadeh/BoDeGiC
+RUN pip install git+https://github.com/natarajan-chidambaram/RABBIT
 
 # Copy requirements.txt and install all dependencies
 COPY requirements.txt ./
