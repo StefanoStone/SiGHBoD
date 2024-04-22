@@ -20,7 +20,7 @@ def extract_github_users(file_path, token, verbose):
         if user[2] is not None:
             names.add(user[2])
     
-    return list(names)
+    return users, list(names)
 
 def env_parser():
     load_dotenv()
@@ -28,7 +28,6 @@ def env_parser():
     repos_path = os.getenv("REPOS_DIR")
     repo = 'sparklemotion/nokogiri'
     file = './SiGHBoD/example.csv'
-
 
 def weighted_average(boolean_list):
     if len(boolean_list) != 4:
@@ -72,9 +71,9 @@ def main(args):
     # get the list of users from the csv file
     if verbose:
         print("Extracting GitHub users from the file:", file)
-    names = extract_github_users(file, token, verbose)
+    users, names = extract_github_users(file, token, verbose)
 
-    result_bin = bin(names)
+    result_bin = bin(users)
     if verbose:
         bin_execution_time = datetime.now() - bodegic_execution_time
         print("Bin execution time:", bin_execution_time)
@@ -134,8 +133,6 @@ def main(args):
     else:
         return (df)
         
-
-
 def arg_parser():
     parser = argparse.ArgumentParser(description='SiGHBoD - Bot detection in Github')
     parser.add_argument('--remote', required=True, help='Name of a repository on GitHub ("owner/repo")')
@@ -154,7 +151,6 @@ def arg_parser():
     group2.add_argument('--json', action='store_true', help='Print results as json')
 
     return parser.parse_args()
-
 
 def cli():
     args = arg_parser()
