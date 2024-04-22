@@ -84,8 +84,8 @@ def detect_if_bot(user):
 
     return any(results)
 
-def bin(token, file_path, verbose):
-    users = get_users(file_path, token, verbose)
+def bin(users): # token, file_path, verbose
+    # users = get_users(file_path, token, verbose)
     for user in users:
         is_bot = detect_if_bot(user)
         users[users.index(user)] += (is_bot,)

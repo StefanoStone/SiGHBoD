@@ -13,6 +13,15 @@ import os
 # import warnings
 # warnings.filterwarnings("ignore")
 
+def extract_github_users(file_path, token, verbose):
+    users = get_users(file_path, token, verbose)
+    names = set()
+    for user in users:
+        if user[2] is not None:
+            names.add(user[2])
+    
+    return list(names)
+
 def env_parser():
     load_dotenv()
     token = os.getenv("GH_TOKEN")
@@ -22,11 +31,11 @@ def env_parser():
 
 
 def weighted_average(boolean_list):
-    if len(boolean_list) != 3:
-        raise ValueError("Input list must contain exactly three booleans")
+    if len(boolean_list) != 4:
+        raise ValueError("Input list must contain exactly four booleans")
 
-    # Bin = 0.45, Bodegha = 0.25, Bodegic = 0.3
-    weights = [0.45, 0.25, 0.3]
+    # Bin = 0.45, Bodegha = 0.20, Bodegic = 0.20, Rabbit = 0.25
+    weights = [0.35, 0.20, 0.20, 0.25]
 
     sum = 0
     total = 0
@@ -60,10 +69,18 @@ def main(args):
         bodegic_execution_time = datetime.now() - bodegha_execution_time
         print("Bodegic execution time:", bodegha_execution_time)
 
-    result_bin = bin(token, file, verbose)
+    # get the list of users from the csv file
+    names = extract_github_users(file, token, verbose)
+
+    result_bin = bin(names)
     if verbose:
         bin_execution_time = datetime.now() - bodegic_execution_time
         print("Bin execution time:", bin_execution_time)
+
+    result_rabbit = rabbit(token, names, verbose)
+    if verbose:
+        rabbit_execution_time = datetime.now() - bin_execution_time
+        print("Rabbit execution time:", rabbit_execution_time)
 
         execution_time = datetime.now() - start_time
         print("Execution time:", execution_time)
@@ -75,10 +92,13 @@ def main(args):
         print('---')
         print("Bin:", result_bin)
         print('---')
+        print("Rabbit:", result_rabbit)
+        print('---')
 
     df = pd.DataFrame(result_bin, columns =['Name', 'Email', 'Login', 'Bin'])
     df['Bodegha'] = None
     df['Bodegic'] = None
+    df['Rabbit'] = None
     df['Bot'] = None
 
     for element in result_bodegha:
@@ -93,8 +113,14 @@ def main(args):
             if element[0] in row_list:
                 df.at[index, 'Bodegic'] = element[1]
 
+    for element in result_rabbit:
+        for index, row in df.iterrows():
+            row_list = row.to_list()
+            if element[0] in row_list:
+                df.at[index, 'Rabbit'] = element[1]
+
     for index, row in df.iterrows():
-        results = [row['Bin'], row['Bodegha'], row['Bodegic']]
+        results = [row['Bin'], row['Bodegha'], row['Bodegic'], row['Rabbit']]
         # compute weighted average of the results
         average = weighted_average(results)
         df.at[index, 'Bot'] = average
@@ -132,17 +158,7 @@ def cli():
     args = arg_parser()
     if args.key == '' or len(args.key) < 35:
         sys.exit('A GitHub personal access token is required to start the process. Please provide a valid token.')
-    
-    users = get_users(args.users, args.key, args.verbose)
-    names = ''
-    for user in users:
-        if user[2] is not None:
-            names += user[2] + ' '
-    
-    result_rabbit = rabbit(args.key, names, False)
-    print(result_rabbit)
-    
-    "print(main(args))"
+    print(main(args))
 
 if __name__ == '__main__':
     """     
