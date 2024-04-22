@@ -11,9 +11,6 @@ def run_dockerfile(path, repo, verbose):
     # "docker", "run", "--rm", "-v" , f'{path}:/bodegic/repos' , 
     result = subprocess.run(["bodegic", f'repos/{repo}', "--csv"], capture_output=True, text=True)
 
-    if verbose:
-        print("Bodegic:", result.stdout)
-
     output_lines = result.stdout.split('\n') 
     output_lines.pop(0) # headers are not needed
 

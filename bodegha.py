@@ -11,9 +11,6 @@ def run_dockerfile(token, repo, verbose):
     # "docker", "run", "--rm", 
     result = subprocess.run(["bodegha", repo, "--key", token, "--csv"], capture_output=True, text=True)
 
-    if verbose:
-        print("Bodegha:", result.stdout)
-
     output_lines = result.stdout.split('\n') 
     output_lines.pop(0) # headers are not needed
 

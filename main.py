@@ -10,8 +10,8 @@ import argparse
 import sys
 import os
 
-# import warnings
-# warnings.filterwarnings("ignore")
+import warnings
+warnings.filterwarnings("ignore")
 
 def extract_github_users(file_path, token, verbose):
     users = get_users(file_path, token, verbose)
@@ -66,7 +66,7 @@ def main(args):
     result_bodegic = bodegic(repos_path, repo, verbose)
     if verbose:
         bodegic_execution_time = datetime.now() - bodegha_execution_time
-        print("Bodegic execution time:", bodegha_execution_time)
+        print("Bodegic execution time:", bodegic_execution_time)
 
     # get the list of users from the csv file
     if verbose:
