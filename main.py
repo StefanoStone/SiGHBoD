@@ -70,6 +70,8 @@ def main(args):
         print("Bodegic execution time:", bodegha_execution_time)
 
     # get the list of users from the csv file
+    if verbose:
+        print("Extracting GitHub users from the file:", file)
     names = extract_github_users(file, token, verbose)
 
     result_bin = bin(names)

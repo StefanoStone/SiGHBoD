@@ -1,4 +1,7 @@
-FROM bitnami/python:3.8.8
+FROM bitnami/python:3.9
+
+# log to stdout
+ENV PYTHONUNBUFFERED=1
 
 # Move in server folder
 WORKDIR /sighbod
@@ -10,7 +13,7 @@ RUN pip install git+https://github.com/natarajan-chidambaram/RABBIT
 
 # Copy requirements.txt and install all dependencies
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copy all files in server directory
 COPY . .
