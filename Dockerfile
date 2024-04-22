@@ -19,6 +19,6 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
 
 # ENTRYPOINT ["tail", "-f", "/dev/null"]
-# Run BotHunter.py
-ENTRYPOINT [ "python",  "main.py"]
-CMD ["--help"]
+# Run SiGHBoD.py
+ ENTRYPOINT [ "python",  "main.py"]
+ CMD ["--help"]

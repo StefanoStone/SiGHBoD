@@ -8,17 +8,14 @@ def run_dockerfile(token, names, verbose):
     @param names: the List of GitHub users (.txt file)
 
     @return: the output of the Docker container
-    """
+    """    
 
-    command = names
-    command.insert(0, 'rabbit')
-    command.append('--key')
-    command.append(token)
-
-    # "docker", "run", "--rm", 
-    result = subprocess.run(command, capture_output=True, text=True)
-    output_lines = result.stdout.split('\n') 
-    output_lines.pop(0) # headers are not needed
+    output_lines = []
+    for name in names:
+        result = subprocess.run(['rabbit', name, '--key', token], capture_output=True, text=True)
+        lines = result.stdout.split('\n') 
+        lines.pop(0) # headers are not needed
+        output_lines.extend(lines)
 
     parsed = []
     for line in output_lines:
