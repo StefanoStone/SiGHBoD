@@ -34,7 +34,7 @@ def weighted_average(boolean_list):
         raise ValueError("Input list must contain exactly four booleans")
 
     # Bin = 0.45, Bodegha = 0.20, Bodegic = 0.20, Rabbit = 0.25
-    weights = [0.35, 0.20, 0.20, 0.25]
+    weights = [0.30, 0.25, 0.20, 0.25]
 
     sum = 0
     total = 0
