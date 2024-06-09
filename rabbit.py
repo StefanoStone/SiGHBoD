@@ -18,10 +18,16 @@ def run_dockerfile(token, names, verbose):
         output_lines.extend(lines)
 
     parsed = []
+    print(output_lines)
     for line in output_lines:
-        if line and line not in ['','\n']:
-            
-            regex = re.compile(r'([A-z0-9]+)\s+([A-z0-9]+)\s+(.+)')
+        if line == '':
+            continue
+        elif line == '\n':
+            continue
+        elif not line:
+            continue
+        else:
+            regex = re.compile(r'(.+)\s+([A-z0-9]+)\s+(.+)') # regex to parse the output
             line = list(regex.findall(line)[0])
             line[1] = line[1].strip()
             
