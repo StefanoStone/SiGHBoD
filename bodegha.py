@@ -12,10 +12,17 @@ def run_dockerfile(token, repo, verbose):
     result = subprocess.run(["bodegha", repo, "--key", token, "--csv"], capture_output=True, text=True)
 
     output_lines = result.stdout.split('\n') 
+    
+    while ',' not in output_lines[0]:
+        output_lines.pop(0) 
+    
     output_lines.pop(0) # headers are not needed
 
     parsed = []
     for line in output_lines:
+        if ',' not in line:
+            continue
+
         if line and line not in ['','\n']:
             line = line.split(',')
             line[1] = line[1].strip()
